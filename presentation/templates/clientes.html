@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clientes - Café Overflow</title>
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body data-pagina="clientes">
+  <aside class="lateral">
+    <a class="marca" href="/">
+      <svg viewBox="0 0 48 48" width="46" height="46" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10 18h24v12a10 10 0 0 1-10 10h-4a10 10 0 0 1-10-10z"/>
+        <path d="M34 21h3a4 4 0 0 1 0 8h-3"/>
+        <path d="M18 5c-2 2 2 4 0 7M26 5c-2 2 2 4 0 7"/>
+        <path d="M19 25l-3 3 3 3M25 25l3 3-3 3"/>
+      </svg>
+      <strong>Café Overflow</strong>
+      <small>Dev &amp; Coffee Lounge</small>
+    </a>
+    <nav>
+      <a href="/">Inicio</a>
+      <a href="/menu.html">Menú</a>
+      <a href="/pedidos.html">Pedidos</a>
+      <a class="activo" href="/clientes.html">Clientes</a>
+    </nav>
+  </aside>
+
+  <main class="contenido">
+    <h1>Clientes</h1>
+    <p class="subtitulo">Gestiona los clientes y sus niveles.</p>
+
+    <section class="panel">
+      <h2>Nuevo cliente</h2>
+      <form id="form-cliente" class="fila-formulario">
+        <div>
+          <label for="nombre">Nombre</label>
+          <input type="text" id="nombre" required minlength="2" maxlength="80">
+        </div>
+        <div>
+          <label for="correo">Correo electrónico</label>
+          <input type="email" id="correo" required maxlength="120">
+        </div>
+        <button class="boton" type="submit">Registrar</button>
+      </form>
+      <div id="mensaje-cliente" class="mensaje"></div>
+    </section>
+
+    <section class="panel separado">
+      <input class="buscador" type="search" id="buscar-cliente" placeholder="Buscar cliente por nombre o correo...">
+      <div class="tabla-contenedor">
+        <table>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Correo</th>
+              <th>Nivel</th>
+              <th>DevPoints</th>
+              <th>Compras</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-clientes"></tbody>
+        </table>
+      </div>
+      <div id="mensaje-lista" class="mensaje"></div>
+    </section>
+  </main>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
