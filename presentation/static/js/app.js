@@ -48,6 +48,11 @@ function escapar(texto) {
   return div.innerHTML;
 }
 
+// Muestra "2026-10-08T09:25:16" como "2026-10-08 09:25"
+function fecha(texto) {
+  return escapar(String(texto).replace('T', ' ').slice(0, 16));
+}
+
 function contiene(texto, busqueda) {
   return String(texto).toLowerCase().includes(busqueda.toLowerCase());
 }
@@ -271,7 +276,7 @@ async function enviarPedido(evento) {
     document.getElementById('devpoints').value = 0;
     pintarCarrito();
     mostrarMensaje('mensaje-pedido',
-      'Pedido #' + r.pedido_id + ' registrado. Total: ' + pesos(r.total) + '. Estado: ' + r.estado + '.', 'ok');
+      'Pedido #' + r.id + ' registrado. Total: ' + pesos(r.total) + '. Estado: ' + r.estado + '.', 'ok');
 
     productos = await pedir('/productos');
     pintarProductos();
@@ -322,7 +327,7 @@ function pintarClientes() {
       '<td>' + escapar(c.correo) + '</td>' +
       '<td><span class="etiqueta">' + escapar(c.nivel) + '</span></td>' +
       '<td>' + c.devpoints + '</td>' +
-      '<td>' + pesos(c.acumulado) + '</td>';
+      '<td>' + pesos(c.compras_acumuladas) + '</td>';
     tabla.appendChild(fila);
   });
 }
@@ -391,7 +396,7 @@ function pintarPedidos() {
   const visibles = listaPedidos.filter(function (p) {
     const porEstado = filtroEstado === '' || p.estado === filtroEstado;
     const porTexto = contiene(p.cliente_nombre, busqueda) ||
-      p.items.some(function (i) { return contiene(i.nombre, busqueda); });
+      p.items.some(function (i) { return contiene(i.producto_nombre, busqueda); });
     return porEstado && porTexto;
   });
 
@@ -402,7 +407,7 @@ function pintarPedidos() {
 
   visibles.forEach(function (p) {
     const detalle = p.items.map(function (i) {
-      return escapar(i.nombre) + ' x ' + i.cantidad;
+      return escapar(i.producto_nombre) + ' x ' + i.cantidad;
     }).join('<br>');
 
     const fila = document.createElement('tr');
@@ -412,7 +417,7 @@ function pintarPedidos() {
       '<td>' + detalle + '</td>' +
       '<td>' + pesos(p.total) + '</td>' +
       '<td><span class="etiqueta ' + (CLASE_ESTADO[p.estado] || '') + '">' + escapar(p.estado) + '</span></td>' +
-      '<td>' + escapar(p.fecha) + '</td>' +
+      '<td>' + fecha(p.fecha) + '</td>' +
       '<td></td>';
 
     if (p.estado !== 'Entregado') {
