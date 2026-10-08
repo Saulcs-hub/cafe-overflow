@@ -176,19 +176,19 @@ cafe-overflow/
 
 Muestra la relación entre el cliente y el sistema Café Overflow.
 
-![C4 Nivel 1 - Contexto](docs/diagramas/c4-nivel-1-contexto.jpeg)
+![C4 Nivel 1 - Contexto](proyecto_cafe_modelo_1.jpeg)
 
 ### Nivel 2: Contenedores
 
 Muestra la interfaz web, la aplicación Python y la base de datos SQLite.
 
-![C4 Nivel 2 - Contenedores](docs/diagramas/c4-nivel-2-contenedores.jpeg)
+![C4 Nivel 2 - Contenedores](proyecto_cafe_modelo_2.jpeg)
 
 ### Nivel 3: Componentes
 
 Muestra los componentes internos de las capas de presentación, negocio y persistencia.
 
-![C4 Nivel 3 - Componentes](docs/diagramas/c4-nivel-3-componentes.jpeg)
+![C4 Nivel 3 - Componentes](proyecto_cafe_modelo_3.jpeg)
 
 ## 🌿 Ramas de GitHub
 
