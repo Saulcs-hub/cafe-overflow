@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menú - Café Overflow</title>
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body data-pagina="menu">
+  <aside class="lateral">
+    <a class="marca" href="/">
+      <svg viewBox="0 0 48 48" width="46" height="46" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10 18h24v12a10 10 0 0 1-10 10h-4a10 10 0 0 1-10-10z"/>
+        <path d="M34 21h3a4 4 0 0 1 0 8h-3"/>
+        <path d="M18 5c-2 2 2 4 0 7M26 5c-2 2 2 4 0 7"/>
+        <path d="M19 25l-3 3 3 3M25 25l3 3-3 3"/>
+      </svg>
+      <strong>Café Overflow</strong>
+      <small>Dev &amp; Coffee Lounge</small>
+    </a>
+    <nav>
+      <a href="/">Inicio</a>
+      <a class="activo" href="/menu.html">Menú</a>
+      <a href="/pedidos.html">Pedidos</a>
+      <a href="/clientes.html">Clientes</a>
+    </nav>
+  </aside>
+
+  <main class="contenido">
+    <h1>Nuestro menú</h1>
+    <p class="subtitulo">El mejor café, para mejores líneas de código.</p>
+
+    <div class="dos-columnas">
+      <section>
+        <input class="buscador" type="search" id="buscar-producto" placeholder="Buscar productos...">
+        <div id="productos" class="productos"></div>
+        <div id="mensaje-productos" class="mensaje"></div>
+      </section>
+
+      <aside class="panel carrito">
+        <h2>Tu carrito <span id="contador" class="contador">0</span></h2>
+        <ul id="lista-carrito">
+          <li class="vacio">Aún no has agregado productos.</li>
+        </ul>
+
+        <form id="form-pedido">
+          <label for="cliente">Cliente</label>
+          <select id="cliente" required>
+            <option value="">Selecciona un cliente</option>
+          </select>
+          <p id="info-cliente" class="info-cliente"></p>
+
+          <label for="devpoints">DevPoints a redimir</label>
+          <input type="number" id="devpoints" min="0" step="1" value="0">
+
+          <h3 class="titulo-resumen">Resumen del pedido</h3>
+          <div id="resumen">
+            <p class="vacio">Agrega productos y elige un cliente para ver el total.</p>
+          </div>
+
+          <button class="boton ancho" type="submit">Confirmar pedido</button>
+        </form>
+
+        <div id="mensaje-pedido" class="mensaje"></div>
+      </aside>
+    </div>
+  </main>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
