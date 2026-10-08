@@ -1,220 +1,206 @@
-# ☕ Café Overflow
+# Café Overflow
 
-Aplicación web para la gestión de pedidos del café temático para desarrolladores **Café Overflow – Dev & Coffee Lounge**.
+Aplicación web para gestionar los pedidos de **Café Overflow – Dev & Coffee Lounge**, un café temático para desarrolladores. Permite consultar el menú, registrar clientes, hacer pedidos, controlar el stock y manejar el programa de lealtad con niveles y DevPoints.
 
-El sistema permite consultar el menú, registrar clientes, crear pedidos, controlar el inventario, administrar niveles de lealtad y redimir DevPoints.
+Proyecto del taller **Modelo N-Tier** de Arquitectura de Software (UNAB). Docente: MSc. Feisar Moreno.
 
-## 👥 Equipo
+## Integrantes
 
-- **Carlos Saúl Villabona** — Backend, lógica de negocio y persistencia.
-- **Alejandro Jiménez** — Frontend, interfaz web y experiencia de usuario.
+- **Carlos Saúl Villabona**: backend, lógica de negocio y persistencia.
+- **Alejandro Jiménez**: frontend e interfaz web.
 
-## 🎯 Objetivo
+## Tecnologías
 
-Desarrollar una aplicación web utilizando una arquitectura **N-Tier de tres capas**, aplicando separación de responsabilidades y aislamiento entre:
+- Frontend: HTML, CSS y JavaScript.
+- Backend: Python, solo con la biblioteca estándar.
+- Base de datos: SQLite.
 
-1. Capa de presentación.
-2. Capa de negocio.
-3. Capa de persistencia.
+No se usó ningún framework ni dependencia externa.
 
-El proyecto se desarrolla sin frameworks, utilizando directamente las tecnologías requeridas.
+## Arquitectura
 
-## 🛠️ Tecnologías
-
-- HTML5
-- CSS3
-- JavaScript
-- Python estándar
-- SQLite
-- Git y GitHub
-- Arquitectura C4
-
-## 🏗️ Arquitectura
+La aplicación está dividida en tres capas y cada una solo se comunica con la que tiene debajo:
 
 ```text
-Interfaz web
-HTML + CSS + JavaScript
-        │
-        ▼
-Capa de presentación
-Servidor HTTP y rutas
-        │
-        ▼
-Capa de negocio
-Servicios y reglas del sistema
-        │
-        ▼
-Capa de persistencia
-DAO y conexión SQLite
-        │
-        ▼
-Base de datos SQLite
+Navegador (HTML, CSS, JS)
+        |
+Presentación   ->  presentation/
+        |
+Negocio        ->  negocio/
+        |
+Persistencia   ->  persistencia/
+        |
+SQLite
 ```
 
-### Capa de presentación
+| Capa | Qué hace | Qué no hace |
+|---|---|---|
+| Presentación | Muestra las páginas, recibe los formularios, atiende las rutas HTTP y arma las respuestas | No calcula totales ni descuentos y no consulta la base de datos |
+| Negocio | Calcula totales y descuentos, valida stock y pedidos pendientes, maneja los estados, los DevPoints y los ascensos | No tiene HTML ni SQL |
+| Persistencia | Guarda y consulta productos, clientes y pedidos en SQLite | No decide reglas de negocio |
 
-Se encarga de:
-
-- Mostrar las vistas.
-- Capturar información de formularios.
-- Validar entradas básicas.
-- Enviar solicitudes HTTP.
-- Mostrar respuestas y mensajes al usuario.
-
-No calcula totales ni aplica reglas de negocio.
-
-### Capa de negocio
-
-Se encarga de:
-
-- Calcular los totales de los pedidos.
-- Aplicar descuentos por nivel.
-- Validar el stock.
-- Validar pedidos pendientes.
-- Gestionar los estados de los pedidos.
-- Administrar DevPoints.
-- Procesar los ascensos de nivel.
-
-### Capa de persistencia
-
-Se encarga de:
-
-- Conectarse con SQLite.
-- Guardar información.
-- Consultar productos, clientes y pedidos.
-- Actualizar el stock.
-- Actualizar los datos de los clientes.
-
-Los DAO no contienen reglas de negocio.
-
-## ☕ Funcionalidades
-
-### Productos
-
-- Registrar productos.
-- Consultar el menú.
-- Consultar precios.
-- Consultar stock disponible.
-- Actualizar el inventario.
-
-### Clientes
-
-- Registrar clientes.
-- Consultar información del cliente.
-- Asignar nivel de lealtad.
-- Acumular compras.
-- Acumular y redimir DevPoints.
-
-### Pedidos
-
-- Crear pedidos.
-- Agregar productos y cantidades.
-- Calcular el total.
-- Aplicar descuentos.
-- Consultar pedidos.
-- Cambiar el estado del pedido.
-
-## ⭐ Reglas de lealtad
-
-| Nivel | Descuento |
-|---|---:|
-| Junior | 5 % |
-| Mid | 10 % |
-| Senior | 15 % |
-
-### Ascensos automáticos
-
-- Todo cliente nuevo inicia como **Junior**.
-- Al alcanzar o superar **$500.000** en compras completadas, asciende a **Mid**.
-- Al alcanzar o superar **$1.500.000** en compras completadas, asciende a **Senior**.
-
-### DevPoints
-
-- Por cada **$20.000 consumidos**, el cliente recibe 1 DevPoint.
-- Cada DevPoint equivale a **$200 de descuento**.
-- Los DevPoints pueden redimirse en una compra posterior.
-- El descuento total nunca puede ser menor que cero.
-
-## 📦 Estados de los pedidos
-
-```text
-Pendiente de pago
-        ↓
-En preparación
-        ↓
-Listo
-        ↓
-Entregado
-```
-
-Las compras acumuladas y los DevPoints se actualizan cuando el pedido se completa.
-
-## 🚫 Validaciones principales
-
-- No se puede pedir una cantidad superior al stock disponible.
-- No se puede crear otro pedido si el cliente tiene uno pendiente de pago.
-- No se pueden redimir más DevPoints de los disponibles.
-- Un pedido no puede quedar con un total negativo.
-- Un cliente nuevo siempre comienza en el nivel Junior.
-
-## 📁 Estructura del proyecto
+## Estructura del proyecto
 
 ```text
 cafe-overflow/
 ├── presentation/
+│   ├── server.py            servidor HTTP
+│   ├── routes.py            rutas de la API
+│   ├── templates/           páginas HTML
+│   └── static/              css, js e imágenes
 ├── negocio/
+│   ├── modelos.py
+│   ├── reglas_lealtad.py
+│   ├── servicios_productos.py
+│   ├── servicios_clientes.py
+│   └── servicios_pedidos.py
 ├── persistencia/
+│   ├── conexion.py
+│   ├── esquema.sql
+│   ├── producto_dao.py
+│   ├── cliente_dao.py
+│   └── pedido_dao.py
 ├── tests/
-├── diagramas/
-├── README.md
-└── .gitignore
+│   └── test_reglas_lealtad.py
+└── README.md
 ```
 
-## 📐 Diagramas C4
+El detalle del frontend está en [presentation/README.md](presentation/README.md).
+
+## Diagramas C4
 
 ### Nivel 1: Contexto
 
-Muestra la relación entre el cliente y el sistema Café Overflow.
-
-![C4 Nivel 1 - Contexto](proyecto_cafe_modelo_1.jpeg)
+![C4 nivel 1](proyecto_cafe_modelo_1.jpeg)
 
 ### Nivel 2: Contenedores
 
-Muestra la interfaz web, la aplicación Python y la base de datos SQLite.
-
-![C4 Nivel 2 - Contenedores](proyecto_cafe_modelo_2.jpeg)
+![C4 nivel 2](proyecto_cafe_modelo_2.jpeg)
 
 ### Nivel 3: Componentes
 
-Muestra los componentes internos de las capas de presentación, negocio y persistencia.
+![C4 nivel 3](proyecto_cafe_modelo_3.jpeg)
 
-![C4 Nivel 3 - Componentes](proyecto_cafe_modelo_3.jpeg)
+## Cómo ejecutar
 
-## 🌿 Ramas de GitHub
+Se necesita Python 3.10 o superior. No hay que instalar nada más.
 
-```text
-main       → versión estable
-develop    → integración del proyecto
-frontend   → desarrollo de la interfaz
-backend    → desarrollo del servidor y la lógica
+1. Clonar el repositorio y entrar a la carpeta:
+
+   ```
+   git clone https://github.com/Saulcs-hub/cafe-overflow.git
+   cd cafe-overflow
+   ```
+
+2. Crear la base de datos (solo la primera vez):
+
+   ```
+   python -m persistencia.conexion
+   ```
+
+3. Iniciar el servidor:
+
+   ```
+   python -m presentation.server
+   ```
+
+4. Abrir en el navegador `http://localhost:8000`.
+
+Los comandos se ejecutan desde la carpeta raíz del proyecto. La base se guarda en `persistencia/cafe_overflow.db` y no se sube al repositorio.
+
+Para correr las pruebas:
+
+```
+python -m unittest discover -s tests
 ```
 
-## 🚀 Ejecución del proyecto
+## Rutas de la API
 
-Próximamente se documentarán los pasos para:
+| Método | Ruta | Para qué sirve |
+|---|---|---|
+| GET | `/api/productos` | Lista los productos con precio y stock |
+| POST | `/api/productos` | Crea un producto (`nombre`, `precio`, `stock`) |
+| GET | `/api/clientes` | Lista los clientes con nivel, DevPoints y compras acumuladas |
+| POST | `/api/clientes` | Registra un cliente (`nombre`, `correo`) |
+| GET | `/api/pedidos` | Lista los pedidos |
+| POST | `/api/pedidos` | Crea un pedido (`cliente_id`, `items`, `devpoints_a_redimir`) |
+| PATCH | `/api/pedidos/{id}/estado` | Cambia el estado de un pedido |
 
-1. Clonar el repositorio.
-2. Inicializar la base de datos.
-3. Ejecutar el servidor Python.
-4. Abrir la aplicación en el navegador.
+Ejemplo para crear un pedido:
 
-## 📚 Contexto académico
+```json
+{
+  "cliente_id": 1,
+  "items": [
+    { "producto_id": 2, "cantidad": 3 }
+  ],
+  "devpoints_a_redimir": 2
+}
+```
 
-Proyecto desarrollado para el taller de **Arquitectura de Software – Modelo N-Tier**, aplicando:
+Cuando algo no se puede hacer, la API responde con código 400 y un mensaje:
 
-- Separación de responsabilidades.
-- Aislamiento de capas.
-- Arquitectura de tres niveles.
-- Patrón DAO.
-- Diagramas C4.
-- Desarrollo colaborativo con GitHub.
+```json
+{ "error": "No hay suficiente stock de Cold Brew." }
+```
+
+## Reglas de negocio
+
+**Descuento por nivel**
+
+| Nivel | Descuento | Se alcanza con |
+|---|---|---|
+| Junior | 5 % | Todo cliente nuevo |
+| Mid | 10 % | $500.000 acumulados |
+| Senior | 15 % | $1.500.000 acumulados |
+
+**DevPoints**
+
+- Se gana 1 DevPoint por cada $20.000 consumidos en un pedido completado.
+- Cada DevPoint vale $200 de descuento en una compra siguiente.
+
+**Validaciones**
+
+- No se puede pedir más cantidad que el stock disponible.
+- No se puede crear un pedido si el cliente tiene otro en estado Pendiente de pago.
+- No se pueden redimir más DevPoints de los que tiene el cliente.
+
+**Estados del pedido**
+
+```text
+Pendiente de pago -> En preparación -> Listo -> Entregado
+```
+
+Solo se puede pasar al estado siguiente, no saltar ni devolverse.
+
+## Decisiones que tomamos
+
+El enunciado deja algunas cosas abiertas. Las definimos así:
+
+1. Un pedido se considera completado cuando llega a **Entregado**. En ese momento se actualizan las compras acumuladas, los DevPoints y el nivel del cliente.
+2. Primero se aplica el descuento por nivel sobre el subtotal y después el de DevPoints.
+3. El descuento por DevPoints nunca supera lo que queda por pagar, así que el total no puede ser negativo.
+4. Las compras acumuladas y los DevPoints ganados se calculan con el **total pagado**, es decir, después de los descuentos.
+5. El stock se descuenta al registrar el pedido, para no vender dos veces la misma unidad.
+6. Los valores se manejan en pesos enteros.
+
+## Ramas
+
+```text
+main      versión estable
+develop   integración
+frontend  trabajo de Alejandro
+backend   trabajo de Carlos
+```
+
+Cada uno trabaja en su rama y los cambios entran a `develop` por Pull Request. Cuando todo está probado, `develop` pasa a `main`.
+
+## Pendiente
+
+Lo que falta para cerrar la integración entre frontend y backend:
+
+- Crear las tablas y cargar los productos iniciales al arrancar el servidor (hoy la base empieza vacía y los productos se crean con `POST /api/productos`).
+- Incluir los productos de cada pedido en `GET /api/pedidos`.
+- Permitir que `PATCH /api/pedidos/{id}/estado` avance al estado siguiente sin enviar el estado desde el navegador.
+- Agregar `POST /api/pedidos/cotizar` para mostrar el resumen del carrito antes de confirmar.
+- Descontar los DevPoints redimidos al crear el pedido y no al entregarlo.
